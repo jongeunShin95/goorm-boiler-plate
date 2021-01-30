@@ -8,8 +8,21 @@ export default function(SpecificComponent, option, adminRoute = null) {
         useEffect(() => {
             dispatch(auth()).then(response => {
                 console.log(response);
-            });
 
+                if (!response.payload.isAuth) {
+                    if (option) {
+                        props.history.push('/login');
+                    }
+                } else {
+                    if (adminRoute && !response.payload.isAdmin) {
+                        props.history.push('/');
+                    } else {
+                        if (option === false) {
+                            props.history.push('/');
+                        }
+                    }
+                }
+            });
         }, []);
 
         return (
